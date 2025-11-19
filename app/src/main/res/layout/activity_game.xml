@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/bg_gradient">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Undercover Game"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/tvCurrentPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Player"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/primary_color"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvGameState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ready to start"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/tvWord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Word will appear here"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:background="@color/card_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Players layout -->
+        <LinearLayout
+            android:id="@+id/playersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnStartRound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Round"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:background="@drawable/btn_primary"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnNextPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next Player"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:background="@drawable/btn_secondary"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnReveal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Voting"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:background="@drawable/btn_secondary"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnNextVoter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next Voter"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:background="@drawable/btn_secondary"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnNextRound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next Round"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:background="@drawable/btn_primary" />
+
+    </LinearLayout>
+</ScrollView>
