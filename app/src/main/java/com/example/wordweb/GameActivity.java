@@ -12,14 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
     private TextView tvWord, tvGameState, tvCurrentPlayer;
-    private Button btnStartRound, btnReveal, btnNextRound, btnNextPlayer, btnNextVoter;
+    private Button btnStartRound, btnReveal, btnNextRound, btnNextPlayer, btnNextVoter, btnReady;
     private LinearLayout playersLayout;
 
     private List<Player> players;
@@ -30,6 +29,7 @@ public class GameActivity extends AppCompatActivity {
     private int currentPlayerTurn = 0;
     private int currentVoterTurn = 0;
     private int votesCount = 0;
+    private boolean isReadyPhase = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
         btnNextRound = findViewById(R.id.btnNextRound);
         btnNextPlayer = findViewById(R.id.btnNextPlayer);
         btnNextVoter = findViewById(R.id.btnNextVoter);
+        btnReady = findViewById(R.id.btnReady);
         playersLayout = findViewById(R.id.playersLayout);
 
         // Hide elements initially
@@ -59,6 +60,7 @@ public class GameActivity extends AppCompatActivity {
         btnNextRound.setVisibility(View.GONE);
         btnNextPlayer.setVisibility(View.GONE);
         btnNextVoter.setVisibility(View.GONE);
+        btnReady.setVisibility(View.GONE);
         playersLayout.setVisibility(View.GONE);
         tvCurrentPlayer.setVisibility(View.GONE);
     }
@@ -96,6 +98,7 @@ public class GameActivity extends AppCompatActivity {
         btnNextRound.setOnClickListener(v -> nextRound());
         btnNextPlayer.setOnClickListener(v -> showNextPlayerWord());
         btnNextVoter.setOnClickListener(v -> showNextVoter());
+        btnReady.setOnClickListener(v -> showPlayerRole());
     }
 
     private void createPlayerCards() {
@@ -150,41 +153,58 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
-        // Start showing words to players one by one
+        // Start showing ready screen to players one by one
         currentPlayerTurn = 0;
-        showCurrentPlayerWord();
+        showReadyScreen();
 
         // Update UI
         playersLayout.setVisibility(View.VISIBLE);
         btnStartRound.setVisibility(View.GONE);
-        btnNextPlayer.setVisibility(View.VISIBLE);
         tvCurrentPlayer.setVisibility(View.VISIBLE);
 
         tvGameState.setText("Pass the device to each player");
     }
 
-    private void showCurrentPlayerWord() {
+    private void showReadyScreen() {
         Player currentPlayer = players.get(currentPlayerTurn);
 
         tvCurrentPlayer.setText("Current: " + currentPlayer.getName());
-        tvWord.setText(currentPlayer.getName() + "'s word:\n" + currentPlayer.getWord() +
-                "\n\nYou are: " + (currentPlayer.isUndercover() ? "👤 UNDERCOVER!" : "👥 WORKER"));
+        tvWord.setText("Pass the device to " + currentPlayer.getName() + "\n\nWhen ready, click the button below to see your role!");
 
         tvWord.setVisibility(View.VISIBLE);
+        btnReady.setVisibility(View.VISIBLE);
+        btnNextPlayer.setVisibility(View.GONE);
 
         // Highlight current player
         highlightCurrentPlayer(currentPlayerTurn);
 
+        isReadyPhase = true;
+    }
+
+    private void showPlayerRole() {
+        if (!isReadyPhase) return;
+
+        Player currentPlayer = players.get(currentPlayerTurn);
+
+        tvWord.setText(currentPlayer.getName() + "'s Role:\n\nWord: " + currentPlayer.getWord() +
+                "\n\nYou are: " + (currentPlayer.isUndercover() ? "👤 UNDERCOVER!" : "👥 WORKER") +
+                "\n\nRemember your word and role!");
+
+        btnReady.setVisibility(View.GONE);
+        btnNextPlayer.setVisibility(View.VISIBLE);
+
         if (currentPlayerTurn == players.size() - 1) {
             btnNextPlayer.setText("Finish Viewing");
         }
+
+        isReadyPhase = false;
     }
 
     private void showNextPlayerWord() {
         currentPlayerTurn++;
 
         if (currentPlayerTurn < players.size()) {
-            showCurrentPlayerWord();
+            showReadyScreen();
         } else {
             // All players have seen their words
             finishWordReveal();
@@ -197,8 +217,8 @@ public class GameActivity extends AppCompatActivity {
         btnNextPlayer.setVisibility(View.GONE);
         btnReveal.setVisibility(View.VISIBLE);
 
-        tvGameState.setText("All players have seen their words!\nDiscuss and find the undercover!");
-        Toast.makeText(this, "Discuss with other players!", Toast.LENGTH_LONG).show();
+        tvGameState.setText("All players have seen their roles!\nDiscuss and find the undercover!");
+        Toast.makeText(this, "Discuss with other players! Find the undercover!", Toast.LENGTH_LONG).show();
 
         // Reset player highlights
         resetPlayerHighlights();
@@ -383,6 +403,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void resetGame() {
         isVotingPhase = false;
+        isReadyPhase = false;
         currentPlayerTurn = 0;
         currentVoterTurn = 0;
         votesCount = 0;
